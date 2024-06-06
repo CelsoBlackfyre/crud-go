@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"encoding/json"
-	"frameworkteste/models"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/celsoblackfyre/crud-go/models"
 	"github.com/gorilla/mux"
 )
 
