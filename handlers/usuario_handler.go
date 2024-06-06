@@ -6,8 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/celsoblackfyre/crud-go/models"
 	"github.com/gorilla/mux"
+
+	"github.com/celsoblackfyre/frameworkteste/models"
 )
 
 var usuarios = []models.Usuario{
@@ -37,6 +38,13 @@ func GetUsuario(w http.ResponseWriter, r *http.Request) {
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var novoUsuario models.Usuario
+
+	err := json.NewDecoder(r.Body).Decode(&novoUsuario)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	json.NewDecoder(r.Body).Decode(&novoUsuario)
 	novoUsuario.ID = len(usuarios) + 1
 	novoUsuario.CriadoEm = time.Now()
