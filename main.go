@@ -1,24 +1,23 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 
 	"github.com/celsoblackfyre/frameworkteste/handlers"
+	"github.com/celsoblackfyre/frameworkteste/models"
 )
 
 func main() {
-	r := mux.NewRouter()
+	r := gin.Default()
 
-	r.HandleFunc("/api/usuarios", handlers.GetUsuarios).Methods("GET")
-	r.HandleFunc("/api/usuarios/{id:[0-9]+}", handlers.GetUsuario).Methods("GET")
-	r.HandleFunc("/api/usuarios/criar", handlers.CriarUsuario).Methods("POST")
-	r.HandleFunc("/api/usuarios/{id:[0-9]+}", handlers.AtualizarUsuario).Methods("PUT")
-	r.HandleFunc("/api/usuarios/{id:[0-9]+}", handlers.DeletarUsuario).Methods("DELETE")
+	models.ConectarBanco()
 
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	fmt.Fprintf(w, "POWER OVER SPICE IS POWER OVER ALL!")
-	// })
-	http.ListenAndServe(":8080", r)
+	r.GET("/usuarios", handlers.GetUsuarios)
+	r.POST("/usuarios", handlers.CriarUsuario)
+	r.GET("/usuarios/:id", handlers.GetUsuario)
+	r.PATCH("/usuarios/:id", handlers.AtualizarUsuario)
+	r.DELETE("/usuarios/:id", handlers.DeletarUsuario)
+
+	r.Run()
+
 }

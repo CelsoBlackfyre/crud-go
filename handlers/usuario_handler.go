@@ -1,12 +1,10 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
-	"strconv"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 
 	"github.com/celsoblackfyre/frameworkteste/models"
 )
@@ -16,74 +14,86 @@ var usuarios = []models.Usuario{
 	{ID: 2, Nome: "Maria", Email: "m@m.com", NomeUsuario: "maria", Senha: "123456"},
 }
 
-func GetUsuarios(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(usuarios)
+func GetUsuarios(c *gin.Context) {
+	var usuarios []models.Usuario
+	models.BD.Find(&usuarios)
+
+	c.JSON(http.StatusOK, gin.H{"usuarios": usuarios})
 }
 
-func GetUsuario(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	id, _ := strconv.Atoi(params["id"])
+func GetUsuario(c *gin.Context) {
+	var usuario models.Usuario
 
-	for _, usuario := range usuarios {
-		if usuario.ID == id {
-			json.NewEncoder(w).Encode(usuario)
-			return
-		}
+	if err := models.BD.Where("id=?", c.Param("id")).First(&usuario).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"Deu ruim": "Usuario nao encontrado"})
+		return
 	}
-	json.NewEncoder(w).Encode(&models.Usuario{})
+	c.JSON(http.StatusOK, gin.H{"usuario": usuario})
 }
 
-func CriarUsuario(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	var novoUsuario models.Usuario
+type UsuarioInput struct {
+	Nome         string `json:"nome" binding:"required"`
+	Email        string `json:"email" binding:"required"`
+	NomeUsuario  string `json:"nomeusuario" binding:"required"`
+	Senha        string `json:"senha" binding:"required"`
+	CriadoEm     string `json:"criadoem"`
+	AtualizadoEm string `json:"atualizadoem"`
+}
 
-	err := json.NewDecoder(r.Body).Decode(&novoUsuario)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+func CriarUsuario(c *gin.Context) {
+	var input UsuarioInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"Deu ruim": err.Error()})
+		return
+	}
+	usuario := models.Usuario{
+		Nome:         input.Nome,
+		Email:        input.Email,
+		NomeUsuario:  input.NomeUsuario,
+		Senha:        input.Senha,
+		CriadoEm:     time.Now(),
+		AtualizadoEm: time.Now(),
+	}
+	models.BD.Create(&usuario)
+	c.JSON(http.StatusOK, gin.H{"usuario": usuario})
+}
+
+type UsuarioUpdate struct {
+	Nome         string `json:"nome"`
+	Email        string `json:"email"`
+	NomeUsuario  string `json:"nomeusuario"`
+	Senha        string `json:"senha"`
+	AtualizadoEm string `json:"atualizadoem"`
+}
+
+func AtualizarUsuario(c *gin.Context) {
+	var usuario models.Usuario
+
+	if err := models.BD.Where("id=?", c.Param("id")).First(&usuario).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"Deu ruim": "Usuario nao encontrado"})
 		return
 	}
 
-	json.NewDecoder(r.Body).Decode(&novoUsuario)
-	novoUsuario.ID = len(usuarios) + 1
-	novoUsuario.CriadoEm = time.Now()
-	novoUsuario.AtualizadoEm = time.Now()
-	usuarios = append(usuarios, novoUsuario)
-	json.NewEncoder(w).Encode(novoUsuario)
+	var input UsuarioUpdate
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"Deu ruim": err.Error()})
+		return
+	}
+	models.BD.Model(&usuario).Updates(input)
+	// Nome:         c.PostForm("nome"),
+	// Email:        c.PostForm("email"),
+	// NomeUsuario:  c.PostForm("nomeusuario"),
+	// Senha:        c.PostForm("senha"),
+	// AtualizadoEm: time.Now(),
+	c.JSON(http.StatusOK, gin.H{"usuario": usuario})
 }
 
-func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-	id, _ := strconv.Atoi(params["id"])
-
-	for index, usuario := range usuarios {
-		if usuario.ID == id {
-			usuarios = append(usuarios[:index], usuarios[index+1:]...)
-			var usuarioAtualizado models.Usuario
-			json.NewDecoder(r.Body).Decode(&usuarioAtualizado)
-			usuarioAtualizado.ID = id
-			usuarioAtualizado.CriadoEm = time.Now()
-			usuarioAtualizado.AtualizadoEm = time.Now()
-			usuarios = append(usuarios, usuarioAtualizado)
-			json.NewEncoder(w).Encode(usuarioAtualizado)
-			return
-		}
+func DeletarUsuario(c *gin.Context) {
+	var usuario models.Usuario
+	if err := models.BD.Where("id = ?", c.Param("id")).First(&usuario).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"Deu ruim": "Usuario nao encontrado"})
+		return
 	}
-}
-
-func DeletarUsuario(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(r)
-
-	id, _ := strconv.Atoi(params["id"])
-
-	for index, usuario := range usuarios {
-		if usuario.ID == id {
-			usuarios = append(usuarios[:index], usuarios[index+1:]...)
-			break
-		}
-	}
-	json.NewEncoder(w).Encode(usuarios)
+	models.BD.Delete(&usuario)
+	c.JSON(http.StatusOK, gin.H{"usuario": usuario})
 }
