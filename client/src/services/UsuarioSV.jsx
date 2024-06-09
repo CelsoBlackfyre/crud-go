@@ -14,10 +14,10 @@ export const criarUsuario = (usuario) => {
 	return axios.post(`${API_URL}/usuarios`, usuario);
 };
 
-export const atualizarUsuario = (id, usuario) => {
+export const atualizarUsuario = async (id, usuario) => {
 	return axios.put(`${API_URL}/usuarios/${id}`, usuario);
 };
 
-export const deletarUsuario = (id) => {
+export const deletarUsuario = async (id) => {
 	return axios.delete(`${API_URL}/usuarios/${id}`);
 };

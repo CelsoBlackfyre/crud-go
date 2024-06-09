@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { criarUsuario } from "../services/UsuarioSV";
-
 const CriarUsuario = () => {
 	const [nome, setNome] = useState("");
 	const [email, setEmail] = useState("");
@@ -81,14 +80,6 @@ const CriarUsuario = () => {
 								Enviar
 							</button>
 						</div>
-						<span>
-							Already have an account ?
-							<a
-								href="#"
-								className="text-blue-600 hover:text-blue-800 hover:underline">
-								Login
-							</a>
-						</span>
 					</form>
 				</div>
 			</div>

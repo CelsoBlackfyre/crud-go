@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { getUsuarios } from "../services/UsuarioSV";
+import { criarUsuario, getUsuarios } from "../services/UsuarioSV";
 import { deletarUsuario } from "../services/UsuarioSV";
-
+import { Link } from "react-router-dom";
+import { atualizarUsuario } from "../services/UsuarioSV";
+import CriarUsuario from "./CriarUsuarios";
+//----------------------------------------------------------------
 const ListarUsuarios = () => {
 	const [usuarios, setUsuarios] = useState([]);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		buscarUsuarios();
-		deletarUsuario();
 	}, []);
 
+	//FUNCAO QUE BUSCA OS USUARIOS CADASTRADOS
 	const buscarUsuarios = async () => {
 		try {
 			const resposta = await getUsuarios();
@@ -31,6 +34,20 @@ const ListarUsuarios = () => {
 		}
 	};
 
+	//FUNCAO PARA DELETAR OS USUARIOS COM O CLICK DO BOTAO
+	const deletarUsuarios = async (id) => {
+		console.log("Botao pressionado", id);
+		try {
+			await deletarUsuario(id);
+			setUsuarios(usuarios.filter((usuario) => usuario.id !== usuario));
+			alert("Usuario deletado com sucesso");
+		} catch (error) {
+			console.error("Erro ao deletar o usuario:", error);
+			setError(error.message);
+		}
+	};
+
+	//CONDICAO PARA MOSTRAR ERROS
 	if (error) {
 		return <div>Erro: {error}</div>;
 	}
@@ -51,10 +68,10 @@ const ListarUsuarios = () => {
 							<br />
 							{usuario.email}
 							<br />
-							<button className="btn btn-accent mr-3" type="button">
-								Editar
-							</button>
-							<button className="btn btn-primary" onClick={() => setUsuarios()}>
+							<Link to={`/atualizar/${usuario.id}`}>Atualizar</Link>
+							<button
+								className="btn btn-primary"
+								onClick={() => deletarUsuarios(usuario.id)}>
 								Deletar
 							</button>
 						</li>
