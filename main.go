@@ -27,6 +27,18 @@ func main() {
 	r.PATCH("/clientes/:id", handlers.AtualizarCliente)
 	r.DELETE("/clientes/:id", handlers.DeletarCliente)
 
+	r.GET("/filmes", handlers.GetFilmes)
+	r.POST("/filmes", handlers.CriarFilme)
+	r.GET("/filmes/:id", handlers.GetFilme)
+	r.PATCH("/filmes/:id", handlers.AtualizarFilme)
+	r.DELETE("/filmes/:id", handlers.DeletarFilme)
+
+	r.GET("/assinaturas", handlers.GetAssinaturas)
+	r.POST("/assinaturas", handlers.CriarAssinatura)
+	r.GET("/assinaturas/:id", handlers.GetAssinatura)
+	r.PATCH("/assinaturas/:id", handlers.AtualizarAssinatura)
+	r.DELETE("/assinaturas/:id", handlers.DeletarAssinatura)
+
 	r.Run()
 
 }

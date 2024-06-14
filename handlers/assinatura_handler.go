@@ -9,13 +9,13 @@ import (
 	"github.com/celsoblackfyre/frameworkteste/models"
 )
 
-func GetAassinaturas(c *gin.Context) {
+func GetAssinaturas(c *gin.Context) {
 	var assinaturas []models.Assinatura
 	models.BD.Find(&assinaturas)
 	c.JSON(http.StatusOK, gin.H{"data": assinaturas})
 }
 
-func GetAassinatura(c *gin.Context) {
+func GetAssinatura(c *gin.Context) {
 	var assinatura models.Assinatura
 	if err := models.BD.Where("id = ?", c.Param("id")).First(&assinatura).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Assinatura nao encontrada!"})

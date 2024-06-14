@@ -10,12 +10,12 @@ export const getFilme = (id) => {
 	return axios.get(`${API_URL}/filmes/${id}`);
 };
 
-export const criarFilme = (usuario) => {
-	return axios.post(`${API_URL}/filmes`, usuario);
+export const criarFilme = (filme) => {
+	return axios.post(`${API_URL}/filmes`, filme);
 };
 
-export const atualizarFilme = async (id, usuario) => {
-	return axios.put(`${API_URL}/filmes/${id}`, usuario);
+export const atualizarFilme = async (id, filme) => {
+	return axios.put(`${API_URL}/filmes/${id}`, filme);
 };
 
 export const deletarFilme = async (id) => {
