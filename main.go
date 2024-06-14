@@ -21,6 +21,12 @@ func main() {
 	r.PATCH("/usuarios/:id", handlers.AtualizarUsuario)
 	r.DELETE("/usuarios/:id", handlers.DeletarUsuario)
 
+	r.GET("/clientes", handlers.GetClientes)
+	r.POST("/clientes", handlers.CriarCliente)
+	r.GET("/clientes/:id", handlers.GetCliente)
+	r.PATCH("/clientes/:id", handlers.AtualizarCliente)
+	r.DELETE("/clientes/:id", handlers.DeletarCliente)
+
 	r.Run()
 
 }

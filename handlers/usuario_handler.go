@@ -68,8 +68,7 @@ type UsuarioUpdate struct {
 
 func AtualizarUsuario(c *gin.Context) {
 	var usuario models.Usuario
-
-	if err := models.BD.Where("id=?", c.Param("id")).First(&usuario).Error; err != nil {
+	if err := models.BD.Where("id = ?", c.Param("id")).First(&usuario).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Deu ruim": "Usuario nao encontrado"})
 		return
 	}
@@ -79,12 +78,8 @@ func AtualizarUsuario(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"Deu ruim": err.Error()})
 		return
 	}
+
 	models.BD.Model(&usuario).Updates(input)
-	// Nome:         c.PostForm("nome"),
-	// Email:        c.PostForm("email"),
-	// NomeUsuario:  c.PostForm("nomeusuario"),
-	// Senha:        c.PostForm("senha"),
-	// AtualizadoEm: time.Now(),
 	c.JSON(http.StatusOK, gin.H{"usuario": usuario})
 }
 

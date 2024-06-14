@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import ListarUsuarios from "./pages/ListarUsuarios";
 import CriarUsuario from "./pages/CriarUsuarios";
 import AtualizarUsuarios from "./pages/AtualizarUsuarios";
+import Listarfilmes from "./pages/ListarFilmes";
+import CriarFilme from "./pages/CriarFilmes";
 function App() {
 	return (
 		<>
@@ -14,6 +16,9 @@ function App() {
 					<Route path="/criar" element={<CriarUsuario />}></Route>
 					<Route path="/atualizar/:id" element={<AtualizarUsuarios />}></Route>
 					<Route path="/listar/" element={<ListarUsuarios />}></Route>
+					<Route path="/criarFilme" element={<CriarFilme />}></Route>
+					<Route path="/filmes/" element={<Listarfilmes />}></Route>
+					<Route path="/filmes/:id" element={<Listarfilmes />}></Route>
 				</Routes>
 			</BrowserRouter>
 		</>

@@ -19,7 +19,6 @@ const ListarUsuarios = () => {
 			const resposta = await getUsuarios();
 			console.log("Reposta API:", resposta);
 
-			// Access the usuarios array from the resposta object
 			const data = resposta.data;
 			if (Array.isArray(data.usuarios)) {
 				setUsuarios(data.usuarios);
@@ -77,6 +76,9 @@ const ListarUsuarios = () => {
 						</li>
 					))}
 				</ul>
+				<button className="btn btn-primary">
+					<Link to={`/criar`}>Criar Usuario</Link>
+				</button>
 			</div>
 		</div>
 	);
