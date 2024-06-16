@@ -62,15 +62,11 @@ const ListarAssinaturas = () => {
 						<li
 							className="px-4 py-2 bg-white hover:bg-sky-100 text-cyan-500 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out"
 							key={assinatura.id}>
-							{assinatura.titulo}
+							{assinatura.plano}
 							<br />
-							{assinatura.descricao}
+							{assinatura.dataInicio}
 							<br />
-							{assinatura.anoLancamento}
-							<br />
-							{assinatura.genero}
-							<br />
-							{assinatura.classificacao}
+							{assinatura.dataFinal}
 							<br />
 							<Link to={`/asssinaturas/${assinatura.id}`}>Update</Link>
 							<button
@@ -81,6 +77,18 @@ const ListarAssinaturas = () => {
 						</li>
 					))}
 				</ul>
+				<div className="botoes display flex m-5 gap-3">
+					<div className="botao-volta">
+						<Link to={`/`} className="btn btn-primary">
+							Voltar
+						</Link>
+					</div>
+					<div className="botao-criar">
+						<Link to={`/assinaturas/criar`} className="btn btn-primary">
+							Criar
+						</Link>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

@@ -10,12 +10,12 @@ export const getCliente = (id) => {
 	return axios.get(`${API_URL}/clientes/${id}`);
 };
 
-export const criarCliente = (usuario) => {
-	return axios.post(`${API_URL}/clientes`, usuario);
+export const criarCliente = (cliente) => {
+	return axios.post(`${API_URL}/clientes`, cliente);
 };
 
-export const atualizarUsuario = async (id, usuario) => {
-	return axios.put(`${API_URL}/clientes/${id}`, usuario);
+export const atualizarCliente = async (id, cliente) => {
+	return axios.put(`${API_URL}/clientes/${id}`, cliente);
 };
 
 export const deletarCliente = async (id) => {

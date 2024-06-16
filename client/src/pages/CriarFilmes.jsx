@@ -9,8 +9,12 @@ const CriarFilme = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log({ titulo, descricao, anoLancamento, genero, classificacao });
-		criarFilme({ titulo, descricao, anoLancamento, genero, classificacao });
+		try {
+			console.log({ titulo, descricao, anoLancamento, genero, classificacao });
+			criarFilme({ titulo, descricao, anoLancamento, genero, classificacao });
+		} catch (error) {
+			console.error("Erro ao tentar cadastrar o filme:", error);
+		}
 	};
 
 	return (

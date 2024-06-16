@@ -34,17 +34,14 @@ const ListarUsuarios = () => {
 	};
 
 	//FUNCAO PARA DELETAR OS USUARIOS COM O CLICK DO BOTAO
-	const deletarUsuarios = async (id) => {
-		console.log("Botao pressionado", id);
-		try {
-			await deletarUsuario(id);
-			setUsuarios(usuarios.filter((usuario) => usuario.id !== usuario));
-			alert("Usuario deletado com sucesso");
-		} catch (error) {
-			console.error("Erro ao deletar o usuario:", error);
-			setError(error.message);
-		}
-	};
+	function deletarUsuarios(id) {
+		deletarUsuario(id)
+			.then(() => {
+				// Usuario atualizado após a exclusão
+				buscarUsuarios();
+			})
+			.catch((error) => setError(error));
+	}
 
 	//CONDICAO PARA MOSTRAR ERROS
 	if (error) {

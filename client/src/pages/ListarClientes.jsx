@@ -87,6 +87,18 @@ const ListarClientes = () => {
 						</li>
 					))}
 				</ul>
+				<div className="botoes display flex m-5 gap-3">
+					<div className="botao-volta">
+						<Link to={`/`} className="btn btn-primary">
+							Voltar
+						</Link>
+					</div>
+					<div className="botao-criar">
+						<Link to={`/clientes/criar`} className="btn btn-primary">
+							Criar
+						</Link>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

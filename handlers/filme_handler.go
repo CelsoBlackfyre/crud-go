@@ -33,7 +33,7 @@ func GetFilme(c *gin.Context) {
 	id := c.Param("id")
 	models.BD.First(&filme, id)
 	if filme.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"message": "Filme nao encontrado"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Filme nao encontrado"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"filme": filme})

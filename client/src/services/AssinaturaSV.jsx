@@ -10,12 +10,12 @@ export const getAssinatura = (id) => {
 	return axios.get(`${API_URL}/assinaturas/${id}`);
 };
 
-export const criarAssinatura = (usuario) => {
-	return axios.post(`${API_URL}/assinaturas`, usuario);
+export const criarAssinatura = (cliente) => {
+	return axios.post(`${API_URL}/assinaturas`, cliente);
 };
 
-export const atualizarAssinatura = async (id, usuario) => {
-	return axios.put(`${API_URL}/assinaturas/${id}`, usuario);
+export const atualizarAssinatura = async (id, cliente) => {
+	return axios.put(`${API_URL}/assinaturas/${id}`, cliente);
 };
 
 export const deletarAssinatura = async (id) => {

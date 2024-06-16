@@ -21,5 +21,21 @@ func ConectarBanco() {
 	if err != nil {
 		panic("Não foi possível criar as tabelas no banco de dados")
 	}
+
+	err = database.AutoMigrate(&Cliente{})
+	if err != nil {
+		panic("Não foi possível criar as tabelas no banco de dados")
+	}
+
+	err = database.AutoMigrate(&Filme{})
+	if err != nil {
+		panic("Não foi possível criar as tabelas no banco de dados")
+	}
+
+	err = database.AutoMigrate(&Assinatura{})
+	if err != nil {
+		panic("Não foi possível criar as tabelas no banco de dados")
+	}
+
 	BD = database
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getFilme, getFilmes, deletarFilme } from "../services/FIlmeSV";
 //----------------------------------------------------------------
-const Listarfilmes = () => {
+const ListarFilmes = () => {
 	const [filmes, setFilmes] = useState([]);
 	const [error, setError] = useState(null);
 
@@ -77,9 +77,21 @@ const Listarfilmes = () => {
 						</li>
 					))}
 				</ul>
+				<div className="botoes display flex m-5 gap-3">
+					<div className="botao-volta">
+						<Link to={`/`} className="btn btn-primary">
+							Voltar
+						</Link>
+					</div>
+					<div className="botao-criar">
+						<Link to={`/filmes/criar`} className="btn btn-primary">
+							Criar
+						</Link>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
 };
 
-export default Listarfilmes;
+export default ListarFilmes;
