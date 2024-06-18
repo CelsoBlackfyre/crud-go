@@ -49,7 +49,7 @@ const ListarClientes = () => {
 	return (
 		<div className="mt-16">
 			<div className="px-4 sm:px-8 max-w-5xl m-auto">
-				<h1 className="text-center font-semibold text-sm">Lista de filmes</h1>
+				<h1 className="text-center font-semibold text-sm">Lista de Clientes</h1>
 				<p className="mt-2 text-center text-xs mb-4 text-gray-500">
 					Puxados do Golang
 				</p>
@@ -78,6 +78,7 @@ const ListarClientes = () => {
 							<br />
 							{cliente.criadoem}
 							<br />
+							{cliente.foto}
 							<Link to={`/Clientes/${cliente.id}`}>Update</Link>
 							<button
 								className="btn btn-primary"

@@ -11,7 +11,11 @@ export const getCliente = (id) => {
 };
 
 export const criarCliente = (cliente) => {
-	return axios.post(`${API_URL}/clientes`, cliente);
+	return axios.post(`${API_URL}/clientes`, cliente, {
+		headers: {
+			"Content-Type": "multipart/form-data",
+		},
+	});
 };
 
 export const atualizarCliente = async (id, cliente) => {

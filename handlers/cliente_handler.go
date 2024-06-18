@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+	"mime/multipart"
 	"net/http"
 	"time"
 
@@ -11,17 +13,34 @@ import (
 
 var clientes = []models.Cliente{
 	{
-		ID:       1,
-		Nome:     "Celso",
-		Cpf:      "011881",
-		Endereco: "Havai,10",
-		Bairro:   "Havai",
-		Cidade:   "Belo Horizonte",
-		Estado:   "MG",
-		Cep:      "30170-001",
-		Email:    "XXXXXXXXXXXXXXX",
-		Telefone: "31999999999",
-		CriadoEm: time.Now(),
+		ID:           1,
+		Nome:         "Celso",
+		Cpf:          "011881",
+		Endereco:     "Havai,10",
+		Bairro:       "Havai",
+		Cidade:       "Belo Horizonte",
+		Estado:       "MG",
+		Cep:          "30170-001",
+		Email:        "XXXXXXXXXXXXXXX",
+		Telefone:     "31999999999",
+		CriadoEm:     time.Now(),
+		AtualizadoEm: time.Now().AddDate(0, 0, 1),
+		Foto:         nil,
+	},
+	{
+		ID:           2,
+		Nome:         "Joao",
+		Cpf:          "011882",
+		Endereco:     "Havai,11",
+		Bairro:       "Havai",
+		Cidade:       "Belo Horizonte",
+		Estado:       "MG",
+		Cep:          "30170-001",
+		Email:        "XXXXXXXXXXXXXXX",
+		Telefone:     "31999999999",
+		CriadoEm:     time.Now(),
+		AtualizadoEm: time.Now().AddDate(0, 0, 1),
+		Foto:         nil,
 	},
 }
 
@@ -42,24 +61,46 @@ func GetCliente(c *gin.Context) {
 }
 
 type ClienteInput struct {
-	Nome         string    `json:"nome" binding:"required"`
-	Cpf          string    `json:"cpf" binding:"required"`
-	Endereco     string    `json:"endereco" binding:"required"`
-	Bairro       string    `json:"bairro" binding:"required"`
-	Cidade       string    `json:"cidade" binding:"required"`
-	Estado       string    `json:"estado" binding:"required"`
-	Cep          string    `json:"cep" binding:"required"`
-	Email        string    `json:"email" binding:"required"`
-	Telefone     string    `json:"telefone" binding:"required"`
-	CriadoEm     time.Time `json:"criado_em"`
-	AtualizadoEm time.Time `json:"atualizado_em"`
-	Foto         string    `json:"foto" swaggerignore:"true"`
+	Nome         string                `json:"nome" binding:"required"`
+	Cpf          string                `json:"cpf" binding:"required"`
+	Endereco     string                `json:"endereco" binding:"required"`
+	Bairro       string                `json:"bairro" binding:"required"`
+	Cidade       string                `json:"cidade" binding:"required"`
+	Estado       string                `json:"estado" binding:"required"`
+	Cep          string                `json:"cep" binding:"required"`
+	Email        string                `json:"email" binding:"required"`
+	Telefone     string                `json:"telefone" binding:"required"`
+	CriadoEm     time.Time             `json:"criado_em"`
+	AtualizadoEm time.Time             `json:"atualizado_em"`
+	Foto         *multipart.FileHeader `json:"foto" swaggerignore:"true"`
 }
 
 func CriarCliente(c *gin.Context) {
 	var input ClienteInput
 
-	if err := c.ShouldBindJSON(&input); err != nil {
+	input.Nome = c.PostForm("nome")
+	input.Cpf = c.PostForm("cpf")
+	input.Endereco = c.PostForm("endereco")
+	input.Bairro = c.PostForm("bairro")
+	input.Cidade = c.PostForm("cidade")
+	input.Estado = c.PostForm("estado")
+	input.Cep = c.PostForm("cep")
+	input.Email = c.PostForm("email")
+	input.Telefone = c.PostForm("telefone")
+
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	file, err := c.FormFile("foto")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	filePath := fmt.Sprintf("./asset/%s", file.Filename)
+	if err := c.SaveUploadedFile(file, filePath); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -76,10 +117,10 @@ func CriarCliente(c *gin.Context) {
 		Telefone:     input.Telefone,
 		CriadoEm:     time.Now(),
 		AtualizadoEm: time.Now(),
-		Foto:         input.Foto,
-	},
+		Foto:         file,
+	}
 
-		models.BD.Create(&cliente)
+	models.BD.Create(&cliente)
 
 	c.JSON(http.StatusOK, gin.H{"cliente": cliente})
 }
