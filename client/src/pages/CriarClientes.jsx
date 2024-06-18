@@ -10,6 +10,7 @@ const CriarCliente = () => {
 	const [cep, setCep] = useState("");
 	const [email, setEmail] = useState("");
 	const [telefone, setTelefone] = useState("");
+	const [foto, setFoto] = useState("");
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log({
@@ -22,6 +23,7 @@ const CriarCliente = () => {
 			cep,
 			email,
 			telefone,
+			foto,
 		});
 		criarCliente({
 			nome,
@@ -33,6 +35,7 @@ const CriarCliente = () => {
 			cep,
 			email,
 			telefone,
+			foto,
 		});
 	};
 
@@ -164,6 +167,12 @@ const CriarCliente = () => {
 								value={telefone}
 								onChange={(e) => setTelefone(e.target.value)}
 							/>
+						</div>
+						<div>
+							<label className="label">
+								<span className="text-base label-text">Foto</span>
+								<input type="file" placeholder="Foto" />
+							</label>
 						</div>
 						<div>
 							<button className="btn btn-block" type="submit">

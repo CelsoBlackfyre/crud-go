@@ -53,6 +53,7 @@ type ClienteInput struct {
 	Telefone     string    `json:"telefone" binding:"required"`
 	CriadoEm     time.Time `json:"criado_em"`
 	AtualizadoEm time.Time `json:"atualizado_em"`
+	Foto         string    `json:"foto" swaggerignore:"true"`
 }
 
 func CriarCliente(c *gin.Context) {
@@ -75,9 +76,10 @@ func CriarCliente(c *gin.Context) {
 		Telefone:     input.Telefone,
 		CriadoEm:     time.Now(),
 		AtualizadoEm: time.Now(),
-	}
+		Foto:         input.Foto,
+	},
 
-	models.BD.Create(&cliente)
+		models.BD.Create(&cliente)
 
 	c.JSON(http.StatusOK, gin.H{"cliente": cliente})
 }
@@ -93,6 +95,7 @@ type ClienteUpdateInput struct {
 	Email        string    `json:"email"`
 	Telefone     string    `json:"telefone"`
 	AtualizadoEm time.Time `json:"atualizado_em"`
+	Foto         string    `json:"foto" swaggerignore:"true"`
 }
 
 func AtualizarCliente(c *gin.Context) {

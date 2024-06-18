@@ -40,8 +40,12 @@ function App() {
 
 				{/* Assinatura */}
 				<Route path="/assinaturas" element={<ListarAssinaturas />} />
-				<Route path="/assinaturas/criar" element={<CriarAssinatura />} />
 				<Route path="/assinaturas/:id" element={<ListarAssinaturas />} />
+				<Route path="/assinaturas/criar" element={<CriarAssinatura />} />
+				<Route
+					path="/assinaturas/atualizar/:id"
+					element={<ListarAssinaturas />}
+				/>
 				<Route
 					path="/assinaturas/deletar/:id"
 					element={<ListarAssinaturas />}
