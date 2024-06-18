@@ -50,7 +50,7 @@ const CriarCliente = () => {
 					<h1 className="text-3xl font-semibold text-center text-gray-700">
 						Golang Crud
 					</h1>
-					<form className="space-y-4" onSubmit={handleSubmit}>
+					<form className="space-y-4" onSubmit={handleSubmit} method="POST" encType="multipart/form-data">
 						<div>
 							<label className="label">
 								<span className="text-base label-text">Nome</span>
@@ -165,7 +165,7 @@ const CriarCliente = () => {
 								<input
 									type="file"
 									placeholder="Foto"
-									onChange={handleFileChange}
+									onChange={(e) => setFoto(e.target.files[0])}
 								/>
 							</label>
 						</div>

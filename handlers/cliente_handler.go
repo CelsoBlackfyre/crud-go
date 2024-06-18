@@ -99,7 +99,7 @@ func CriarCliente(c *gin.Context) {
 		return
 	}
 
-	filePath := fmt.Sprintf("./asset/%s", file.Filename)
+	filePath := filepath.Join("./asset/%s", file.Filename)
 	if err := c.SaveUploadedFile(file, filePath); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -117,7 +117,7 @@ func CriarCliente(c *gin.Context) {
 		Telefone:     input.Telefone,
 		CriadoEm:     time.Now(),
 		AtualizadoEm: time.Now(),
-		Foto:         file,
+		Foto:         filePath,
 	}
 
 	models.BD.Create(&cliente)
